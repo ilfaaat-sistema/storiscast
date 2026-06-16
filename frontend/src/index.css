@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@keyframes sig {
+  0%   { transform: scale(1); opacity: .55; }
+  70%  { transform: scale(2.4); opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.sig  { animation: sig 1s ease-out infinite; }
+.spin { animation: spin 1s linear infinite; }
+.scl::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sig, .spin { animation: none !important; }
+}

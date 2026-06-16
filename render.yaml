@@ -1,0 +1,62 @@
+# Render Blueprint — verify against https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: storiscast-api
+    runtime: python
+    region: frankfurt
+    plan: free
+    buildCommand: cd backend && pip install -r requirements.txt && alembic upgrade head
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        sync: false
+      - key: FERNET_KEY
+        sync: false
+      - key: DEFAULT_TENANT_ID
+        value: 00000000-0000-0000-0000-000000000001
+
+  - type: cron
+    name: publish-worker
+    runtime: python
+    region: frankfurt
+    schedule: "*/2 * * * *"
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && python -m cron.publish_worker
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        sync: false
+      - key: FERNET_KEY
+        sync: false
+      - key: DEFAULT_TENANT_ID
+        value: 00000000-0000-0000-0000-000000000001
+
+  - type: cron
+    name: insights-poller
+    runtime: python
+    region: frankfurt
+    schedule: "0 * * * *"
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && python -m cron.insights_poller
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: FERNET_KEY
+        sync: false
+      - key: DEFAULT_TENANT_ID
+        value: 00000000-0000-0000-0000-000000000001
