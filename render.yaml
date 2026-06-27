@@ -1,5 +1,6 @@
-# Render Blueprint — verify against https://render.com/docs/blueprint-spec
+# Render Blueprint — https://render.com/docs/blueprint-spec
 services:
+  # ── Backend API ────────────────────────────────────────────────────────────
   - type: web
     name: storiscast-api
     runtime: python
@@ -18,9 +19,12 @@ services:
         sync: false
       - key: FERNET_KEY
         sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
       - key: DEFAULT_TENANT_ID
         value: 00000000-0000-0000-0000-000000000001
 
+  # ── Publish Worker (every 2 min) ───────────────────────────────────────────
   - type: cron
     name: publish-worker
     runtime: python
@@ -39,9 +43,24 @@ services:
         sync: false
       - key: FERNET_KEY
         sync: false
+      - key: VK_ACCESS_TOKEN
+        sync: false
+      - key: TG_API_ID
+        sync: false
+      - key: TG_API_HASH
+        sync: false
+      - key: TG_SESSION_STRING
+        sync: false
+      - key: IG_ACCESS_TOKEN
+        sync: false
+      - key: IG_USER_ID
+        sync: false
+      - key: IG_GRAPH_API_VERSION
+        value: v21.0
       - key: DEFAULT_TENANT_ID
         value: 00000000-0000-0000-0000-000000000001
 
+  # ── Insights Poller (every hour) ───────────────────────────────────────────
   - type: cron
     name: insights-poller
     runtime: python
@@ -56,7 +75,39 @@ services:
         sync: false
       - key: SUPABASE_SERVICE_KEY
         sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        sync: false
       - key: FERNET_KEY
         sync: false
+      - key: VK_ACCESS_TOKEN
+        sync: false
+      - key: TG_API_ID
+        sync: false
+      - key: TG_API_HASH
+        sync: false
+      - key: TG_SESSION_STRING
+        sync: false
+      - key: IG_ACCESS_TOKEN
+        sync: false
+      - key: IG_USER_ID
+        sync: false
+      - key: IG_GRAPH_API_VERSION
+        value: v21.0
       - key: DEFAULT_TENANT_ID
         value: 00000000-0000-0000-0000-000000000001
+
+  # ── Frontend Static Site ───────────────────────────────────────────────────
+  - type: web
+    name: storiscast-ui
+    runtime: static
+    region: frankfurt
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_API_URL
+        # Set to your API URL after first deploy, e.g. https://storiscast-api.onrender.com
+        sync: false
