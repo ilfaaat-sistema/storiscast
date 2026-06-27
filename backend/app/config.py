@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     IG_USER_ID: str = ""
     IG_GRAPH_API_VERSION: str = "v21.0"
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file="../.env", extra="ignore")
 
 
 settings = Settings()

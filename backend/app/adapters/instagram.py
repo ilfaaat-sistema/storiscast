@@ -1,3 +1,4 @@
+from typing import Optional
 """
 Instagram Stories adapter.
 
@@ -48,9 +49,9 @@ class InstagramPublisher:
 
     def __init__(
         self,
-        access_token: str | None = None,
-        ig_user_id: str | None = None,
-        version: str | None = None,
+        access_token: Optional[str] = None,
+        ig_user_id: Optional[str] = None,
+        version: Optional[str] = None,
     ) -> None:
         self._env_token = access_token
         self._env_user_id = ig_user_id
@@ -170,7 +171,7 @@ class InstagramPublisher:
     # ------------------------------------------------------------------
 
     async def publish_story(
-        self, account, media: list, caption: str | None
+        self, account, media: list, caption: Optional[str]
     ) -> StoryResult:
         if not media:
             return StoryResult(ok=False, error="no media items")

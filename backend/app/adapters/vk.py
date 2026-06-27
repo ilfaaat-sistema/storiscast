@@ -1,3 +1,4 @@
+from typing import Optional
 """
 VK Stories adapter.
 
@@ -24,7 +25,7 @@ VK_API_VERSION = "5.199"
 class VKPublisher:
     platform = "vk"
 
-    def __init__(self, access_token: str | None = None) -> None:
+    def __init__(self, access_token: Optional[str] = None) -> None:
         # Token can come from constructor (tests / env fallback) or account credentials.
         self._env_token = access_token
 
@@ -67,7 +68,7 @@ class VKPublisher:
     # Public interface
     # ------------------------------------------------------------------
 
-    async def publish_story(self, account, media: list, caption: str | None) -> StoryResult:
+    async def publish_story(self, account, media: list, caption: Optional[str]) -> StoryResult:
         if not media:
             return StoryResult(ok=False, error="no media items")
 

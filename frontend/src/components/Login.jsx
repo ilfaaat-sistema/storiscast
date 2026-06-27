@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { T, SANS, MONO } from "../tokens.js";
 import { supabase } from "../supabase.js";
 
-export default function Login() {
+export default function Login({ onBypass }) {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading]   = useState(false);
@@ -72,6 +72,14 @@ export default function Login() {
                 {!loading && <ArrowRight size={18} />}
               </button>
             </form>
+
+            {onBypass && (
+              <button onClick={onBypass}
+                style={{ color: T.sub, fontFamily: MONO }}
+                className="text-[10px] tracking-wide text-center mt-4 w-full opacity-60 hover:opacity-100 transition-opacity">
+                войти без авторизации (тест)
+              </button>
+            )}
 
           </div>
         </div>

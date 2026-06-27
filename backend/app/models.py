@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime, timezone
+from typing import Optional, List
 from sqlalchemy import String, Text, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -21,11 +22,11 @@ class Tenant(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
     name: Mapped[str] = mapped_column(String(255))
-    owner_uid: Mapped[str | None] = mapped_column(String(255), unique=True, nullable=True)
+    owner_uid: Mapped[Optional[str]] = mapped_column(String(255), unique=True, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
-    accounts: Mapped[list["ConnectedAccount"]] = relationship(back_populates="tenant")
-    casts: Mapped[list["Cast"]] = relationship(back_populates="tenant")
+    accounts: Mapped[List["ConnectedAccount"]] = relationship(back_populates="tenant")
+    casts: Mapped[List["Cast"]] = relationship(back_populates="tenant")
 
 
 class ConnectedAccount(Base):
@@ -34,14 +35,14 @@ class ConnectedAccount(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
     tenant_id: Mapped[str] = mapped_column(String(36), ForeignKey("tenants.id"))
     platform: Mapped[str] = mapped_column(String(50))
-    handle: Mapped[str | None] = mapped_column(String(255))
+    handle: Mapped[Optional[str]] = mapped_column(String(255))
     status: Mapped[str] = mapped_column(String(50), default="connected")
-    credentials_enc: Mapped[str | None] = mapped_column(Text)
-    meta_json: Mapped[str | None] = mapped_column(Text)
+    credentials_enc: Mapped[Optional[str]] = mapped_column(Text)
+    meta_json: Mapped[Optional[str]] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
     tenant: Mapped["Tenant"] = relationship(back_populates="accounts")
-    jobs: Mapped[list["Job"]] = relationship(back_populates="account")
+    jobs: Mapped[List["Job"]] = relationship(back_populates="account")
 
 
 class Cast(Base):
@@ -49,16 +50,16 @@ class Cast(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
     tenant_id: Mapped[str] = mapped_column(String(36), ForeignKey("tenants.id"))
-    caption: Mapped[str | None] = mapped_column(Text)
+    caption: Mapped[Optional[str]] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(50), default="queued")
-    scheduled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    scheduled_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
     tenant: Mapped["Tenant"] = relationship(back_populates="casts")
-    media: Mapped[list["CastMedia"]] = relationship(
+    media: Mapped[List["CastMedia"]] = relationship(
         back_populates="cast", order_by="CastMedia.position"
     )
-    jobs: Mapped[list["Job"]] = relationship(back_populates="cast")
+    jobs: Mapped[List["Job"]] = relationship(back_populates="cast")
 
 
 class CastMedia(Base):
@@ -83,14 +84,14 @@ class Job(Base):
     status: Mapped[str] = mapped_column(String(50), default="queued")
     # queued | sending | done | error | manual | scheduled
     attempts: Mapped[int] = mapped_column(Integer, default=0)
-    last_error: Mapped[str | None] = mapped_column(Text)
-    external_id: Mapped[str | None] = mapped_column(String(255))
-    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    last_error: Mapped[Optional[str]] = mapped_column(Text)
+    external_id: Mapped[Optional[str]] = mapped_column(String(255))
+    published_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
     cast: Mapped["Cast"] = relationship(back_populates="jobs")
     account: Mapped["ConnectedAccount"] = relationship(back_populates="jobs")
-    insights: Mapped[list["Insight"]] = relationship(back_populates="job")
+    insights: Mapped[List["Insight"]] = relationship(back_populates="job")
 
 
 class Insight(Base):

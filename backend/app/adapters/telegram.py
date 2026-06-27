@@ -76,7 +76,7 @@ class TelegramPublisher:
 
         return None, None, None
 
-    async def publish_story(self, account, media: list, caption: str | None) -> StoryResult:
+    async def publish_story(self, account, media: list, caption: Optional[str]) -> StoryResult:
         if not media:
             return StoryResult(ok=False, error="no media items")
 

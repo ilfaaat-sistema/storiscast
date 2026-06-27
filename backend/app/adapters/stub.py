@@ -1,3 +1,4 @@
+from typing import Optional
 import uuid
 from .base import StoryResult
 
@@ -8,7 +9,7 @@ class StubPublisher:
     def __init__(self, platform: str) -> None:
         self.platform = platform
 
-    async def publish_story(self, account, media: list, caption: str | None) -> StoryResult:
+    async def publish_story(self, account, media: list, caption: Optional[str]) -> StoryResult:
         return StoryResult(ok=True, external_id=f"stub_{uuid.uuid4().hex[:8]}")
 
     async def fetch_insights(self, account, external_id: str) -> dict[str, int]:

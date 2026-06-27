@@ -1,3 +1,4 @@
+from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -13,26 +14,26 @@ class MediaItem(BaseModel):
 
 
 class CastCreate(BaseModel):
-    caption: str | None = None
+    caption: Optional[str] = None
     media: list[MediaItem]
     targets: list[str]  # ["vk", "tg", "ig", "wa"]
-    scheduled_at: datetime | None = None
+    scheduled_at: Optional[datetime] = None
 
 
 class JobOut(BaseModel):
     id: str
     platform: str
     status: str
-    external_id: str | None = None
-    published_at: datetime | None = None
-    last_error: str | None = None
+    external_id: Optional[str] = None
+    published_at: Optional[datetime] = None
+    last_error: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
 
 class CastOut(BaseModel):
     id: str
-    caption: str | None
+    caption: Optional[str]
     status: str
     created_at: datetime
     jobs: list[JobOut] = []
@@ -43,7 +44,7 @@ class CastOut(BaseModel):
 class AccountOut(BaseModel):
     id: str
     platform: str
-    handle: str | None
+    handle: Optional[str]
     status: str
 
     model_config = {"from_attributes": True}
@@ -71,7 +72,7 @@ class CastInsightsOut(BaseModel):
 
 class CastListOut(BaseModel):
     id: str
-    caption: str | None
+    caption: Optional[str]
     status: str
     created_at: datetime
     platforms: list[str]

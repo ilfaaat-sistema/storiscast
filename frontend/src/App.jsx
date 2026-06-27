@@ -20,6 +20,7 @@ function isSettled(job) {
 export default function App() {
   const [session, setSession]         = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [devBypass, setDevBypass]     = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -136,9 +137,9 @@ export default function App() {
       </div>
     );
   }
-  if (!session) return <Login />;
+  if (!session && !devBypass) return <Login onBypass={() => setDevBypass(true)} />;
 
-  const userLabel = session.user?.email ?? "Аккаунт";
+  const userLabel = session?.user?.email ?? "dev";
 
   return (
     <div style={{ background: "#cfccc3", fontFamily: SANS, minHeight: "100vh" }}
