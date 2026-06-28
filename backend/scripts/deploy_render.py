@@ -137,9 +137,13 @@ else:
     api_id = r["service"]["id"]
     print(f"   Создан: {api_id}")
 
+# Воркеры запускаются ВНУТРИ web-сервиса через /internal/trigger, значит читают env
+# web-сервиса — поэтому соц-токены (VK/TG/IG) тоже должны быть здесь, а не только в кронах.
 set_env(api_id, ev(
     "DATABASE_URL", "SUPABASE_URL", "SUPABASE_SERVICE_KEY",
     "SUPABASE_STORAGE_BUCKET", "FERNET_KEY", "SUPABASE_JWT_SECRET", "INTERNAL_SECRET",
+    "VK_ACCESS_TOKEN", "TG_API_ID", "TG_API_HASH", "TG_SESSION_STRING",
+    "IG_ACCESS_TOKEN", "IG_USER_ID", "IG_GRAPH_API_VERSION",
     extra=EXTRA_BASE,
 ))
 api_url = f"https://storiscast-api.onrender.com"
