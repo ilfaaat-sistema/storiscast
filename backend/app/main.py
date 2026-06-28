@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import AsyncSessionLocal
 from .models import Tenant, ConnectedAccount
 from .config import settings
-from .routers import health, media, accounts, casts, auth as auth_router
+from .routers import health, media, accounts, casts, auth as auth_router, internal
 
 
 @asynccontextmanager
@@ -59,3 +59,4 @@ app.include_router(auth_router.router)
 app.include_router(media.router)
 app.include_router(accounts.router)
 app.include_router(casts.router)
+app.include_router(internal.router)

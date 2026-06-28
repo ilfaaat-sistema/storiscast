@@ -27,6 +27,9 @@ class Settings(BaseSettings):
     IG_USER_ID: str = ""
     IG_GRAPH_API_VERSION: str = "v21.0"
 
+    # Internal cron trigger (GitHub Actions → POST /internal/trigger)
+    INTERNAL_SECRET: str = ""
+
     model_config = SettingsConfigDict(env_file="../.env", extra="ignore")
 
 
