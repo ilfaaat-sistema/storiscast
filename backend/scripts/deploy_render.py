@@ -57,6 +57,7 @@ SECRETS = {
     "IG_ACCESS_TOKEN":         _e("IG_ACCESS_TOKEN"),
     "IG_USER_ID":              _e("IG_USER_ID"),
     "IG_GRAPH_API_VERSION":    _e("IG_GRAPH_API_VERSION", "v21.0"),
+    "INTERNAL_SECRET":         _e("INTERNAL_SECRET"),
     "VITE_SUPABASE_ANON_KEY":  _e("VITE_SUPABASE_ANON_KEY", _e("SUPABASE_ANON_KEY")),
 }
 
@@ -138,7 +139,7 @@ else:
 
 set_env(api_id, ev(
     "DATABASE_URL", "SUPABASE_URL", "SUPABASE_SERVICE_KEY",
-    "SUPABASE_STORAGE_BUCKET", "FERNET_KEY", "SUPABASE_JWT_SECRET",
+    "SUPABASE_STORAGE_BUCKET", "FERNET_KEY", "SUPABASE_JWT_SECRET", "INTERNAL_SECRET",
     extra=EXTRA_BASE,
 ))
 api_url = f"https://storiscast-api.onrender.com"
